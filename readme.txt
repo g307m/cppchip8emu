@@ -25,14 +25,14 @@ Implemented:
  🗹 Bnnn
  🗹 Cxkk
  🗹 Dxyn
- ☐ Ex9E
- ☐ ExA1
- ☐ Fx07
- ☐ Fx0A
- ☐ Fx15
- ☐ Fx18
- ☐ Fx1E
- ☐ Fx29
+ 🗹 Ex9E
+ 🗹 ExA1
+ 🗹 Fx07
+ 🗹 Fx0A
+ 🗹 Fx15
+ 🗹 Fx18
+ 🗹 Fx1E
+ 🗹 Fx29
  ☐ Fx33
- ☐ Fx55
- ☐ Fx65
+ 🗹 Fx55
+ 🗹 Fx65

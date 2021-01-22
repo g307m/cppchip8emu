@@ -280,18 +280,25 @@ int main(int argc, char *argv[]) {
 						break;
 					
 					case 0x33:
-						//TODO:vx to bcd at i
+					{ /* new scope because i keep getting errors from clangd */
+						int x = memory[pc]&0xF;
+						memory[address+0] = registers[x] / 100;
+						memory[address+1] = registers[x] % 100 / 10;
+						memory[address+2] = registers[x] % 10;
 						break;
+					}
 
 					case 0x55:
 						for (int i = 0; i < (memory[pc]&0xF); i++) {
 							memory[address+i] = registers[i];
 						}
+						break;
 
 					case 0x65:
 						for (int i = 0; i < (memory[pc]&0xF); i++) {
 							registers[i] = memory[address+i];
 						}
+						break;
 
 				default:
 					break;

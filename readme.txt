@@ -33,6 +33,6 @@ Implemented:
  🗹 Fx18
  🗹 Fx1E
  🗹 Fx29
- ☐ Fx33
+ 🗹 Fx33
  🗹 Fx55
  🗹 Fx65

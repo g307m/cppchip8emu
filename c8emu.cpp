@@ -11,6 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <unistd.h>
 
 #include "letters.xbm"
 #include "rs_primitives.h"
@@ -22,23 +23,29 @@ int main(int argc, char *argv[]) {
 	if (argc < 2)
 		return 3;
 
-	fstream romfile;
-	romfile.open(argv[1], ios_base::in | ios_base::binary | ios_base::ate);
-
-	if (!romfile)
+	if (access(argv[1], F_OK) != 0) {
+		printf("fail access %i\n", access(argv[1], F_OK));
 		return 4;
+	}
 
-	/* read rom to memory */
-	array<u8, 0xFFF> memory = {0};
-	int romsize = romfile.tellg() / 2;
-	romfile.seekg(0);
-	char chars[2] = {0};
-	for (int i = 0; i < romsize; i += 2) {
-		chars[0] = 0;
-		chars[1] = 0;
-		romfile.read(chars, 2);
-		memory[0x200 + i] = chars[1];
-		memory[0x200 + i + 1] = chars[0];
+	/* read rom to memory, stolen from cc8dc */
+	u8 memory[0xFFF] = {0};
+	FILE* rom = fopen(argv[1], "rb");
+	u16 fileData[0xDFF] = {0}; /* dff is max rom size */
+	fseek(rom, 0L, SEEK_END);
+	int romsize = ftell(rom);
+	rewind(rom);
+	for (int i = 0; i < romsize; i+=2) {
+		u8 readto[2];
+		fread(readto, 1, 2, rom);
+		fileData[i+1]   = readto[1];
+		fileData[i] = readto[0];
+	}
+	fclose(rom);
+
+	/* load rom */
+	for (int i = 0; i < 0xDFF; i++) {
+		memory[i+0x200] = fileData[i];
 	}
 
 	/* load text */
@@ -120,12 +127,12 @@ int main(int argc, char *argv[]) {
 				break;
 
 			case 0x10:
-				pc = (memory[pc] << 8) | memory[pc + 1];
+				pc = ((memory[pc] << 8) | memory[pc + 1])&0x0FFF;
 				break;
 
 			case 0x20:
 				stack[++sp] = pc;
-				pc = (memory[pc] << 8) | memory[pc + 1];
+				pc = ((memory[pc] << 8) | memory[pc + 1])&0x0FFF;
 				break;
 
 			case 0x30:

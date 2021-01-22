@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Debug",
 			"program": "${workspaceFolder}/c8emu",
-			"args": ["BC_test.ch8"],
+			"args": ["c8_test.c8"],
 			"cwd": "${workspaceFolder}"
 		}
 	]
